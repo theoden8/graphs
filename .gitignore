@@ -7,3 +7,4 @@ Testing
 CMakeCache.txt
 *.a
 cmake_install.cmake
+ignored
