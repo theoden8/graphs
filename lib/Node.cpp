@@ -1,41 +1,58 @@
 #include "Node.hpp"
 
 #include <cstdio>
+#include <cassert>
 
-node_t::node_t(const size_t id):
-	id_(id), edges()
+Node::Node(const size_t id):
+	id_(id),
+	ports()
 {}
 
-node_t::~node_t() {
-}
+Node::~Node()
+{}
 
 
-size_t node_t::id() const {
+size_t Node::id() const {
 	return id_;
 }
 
+bool Node::has(const Node &key) const {
+	return ports.count(key.id());
+}
 
-void node_t::operator>>= (node_t &other) {
-	edges[other.id()] |= OUTBOUND;
-	other.edges[id()] |= INBOUND;
+bool Node::has(const size_t &key) const {
+	return ports.count(key);
+}
+
+mask_t Node::at(const Node &key) const {
+	return at(key.id());
+}
+
+mask_t Node::at(const size_t &key) const {
+	if(has(key)) {
+		const mask_t val = ports.at(key);
+		assert(val != MULL);
+		return val;
+	}
+	return MULL;
 }
 
 
-const bool node_t::operator== (const node_t &other) const {
+const bool Node::operator== (const Node &other) const {
 	return id_ == other.id();
 }
 
-const bool node_t::operator>> (const node_t &other) {
-	return edges[other.id()] & OUTBOUND;
+const bool Node::operator!= (const Node &other) const {
+	return !(operator==(other));
 }
 
-const bool node_t::operator<< (const node_t &other) {
-	return edges[other.id()] & INBOUND;
+const bool Node::operator>> (const Node &other) const {
+	if(ports.count(other.id()))
+		return ports.at(other.id()) & OUTBOUND;
+	return false;
 }
 
-
-void node_t::print() const {
-	printf("node: %lu\n", id_);
-	for(const auto &it : edges)
-		printf("	%lu : %x\n", it.first, it.second);
+const bool Node::operator<< (const Node &other) const {
+	return other >> *this;
 }
+

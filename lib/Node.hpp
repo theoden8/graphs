@@ -1,29 +1,37 @@
 #pragma once
 
+#include <cstdio>
 #include <unordered_map>
-
-#define  INBOUND (1 << 0)
-#define OUTBOUND (1 << 1)
 
 typedef char mask_t;
 
-struct node_t {
-private:
+class Node {
 	const size_t id_;
-public:
-	std::unordered_map <size_t, mask_t> edges;
+	std::unordered_map <size_t, mask_t> ports;
 
 public:
-	node_t(size_t id);
-	~node_t();
+	typedef enum {
+		MULL,
+		INBOUND,
+		OUTBOUND
+	} PORT_TYPE;
+
+	Node(size_t id);
+	~Node();
 
 	size_t id() const;
+	bool has(const Node &key) const;
+	bool has(const size_t &key) const;
+	mask_t at(const Node &key) const;
+	mask_t at(const size_t &key) const;
+	const bool operator== (const Node &other) const;
+	const bool operator!= (const Node &other) const;
+	const bool operator>> (const Node &other) const;
+	const bool operator<< (const Node &other) const;
 
-	void operator>>= (node_t &other);
-
-	const bool operator== (const node_t &other) const;
-	const bool operator>> (const node_t &other);
-	const bool operator<< (const node_t &other);
-
-	void print() const;
+	void operator>>= (Node &other);
+	void operator<<= (Node &other);
+	void operator-= (Node &other);
+	bool check_pair(const Node &other) const;
+	void print(FILE *out = stdout) const;
 };

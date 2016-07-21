@@ -3,10 +3,10 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
-class GraphTest : public ::testing::Test {
+class NodeTest : public ::testing::Test {
 protected:
-	GraphTest() {}
-	virtual ~GraphTest() {}
+	NodeTest() {}
+	virtual ~NodeTest() {}
 	virtual void SetUp() {}
 	virtual void TearDown() {}
 };
