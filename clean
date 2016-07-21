@@ -1,7 +1,9 @@
 #!/bin/sh
 
-for i in Makefile CMakeFiles CMakeCache.txt cmake_install.cmake; do
-    find . -name "$i" -exec rm  -rfv {} \;
+rm -rvf include/*/
+
+for i in Makefile CMakeFiles CMakeCache.txt cmake_install.cmake CTestTestfile.cmake Testing; do
+  find . -name "$i" -exec rm  -rfv {} \;
 done
 
 rm -fv lib/lib*.a

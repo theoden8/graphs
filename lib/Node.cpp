@@ -6,7 +6,6 @@ node_t::node_t(const size_t id):
 	id_(id), edges()
 {}
 
-
 node_t::~node_t() {
 }
 
@@ -15,11 +14,11 @@ size_t node_t::id() const {
 	return id_;
 }
 
-void node_t::join(node_t &other) {
+
+void node_t::operator>>= (node_t &other) {
 	edges[other.id()] |= OUTBOUND;
 	other.edges[id()] |= INBOUND;
 }
-
 
 
 const bool node_t::operator== (const node_t &other) const {
