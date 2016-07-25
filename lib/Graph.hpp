@@ -29,10 +29,11 @@ public:
 	Node &operator[] (size_t idx);
 	const Node operator[] (size_t idx) const;
 
+	void Print() const;
+
+// GraphEdges
 	void AddNode();
 	void Connect(size_t id1, size_t id2);
-
-	void Print() const;
 private:
 	/* data */
 };
