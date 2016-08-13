@@ -2,8 +2,6 @@
 
 #include "Graph.hpp"
 
-#define I_AM(property) HasProperty(property)
-
 Graph::Graph():
 	nodes_(), properties_(NO_PROPERTIES)
 {}
@@ -28,25 +26,8 @@ mask_t Graph::GetProperties() const {
 	return properties_;
 }
 
-bool Graph::HasProperty(mask_t property) const {
+bool Graph::Is(mask_t property) const {
 	return properties_ & INT2MASK(property);
-}
-
-std::vector <Node> Graph::GetNodes() const {
-	return nodes_;
-}
-
-size_t Graph::Size() const {
-	return nodes_.size();
-}
-
-
-Node &Graph::operator[] (size_t idx) {
-	return nodes_[idx];
-}
-
-const Node Graph::operator[] (size_t idx) const {
-	return nodes_[idx];
 }
 
 

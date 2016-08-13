@@ -13,8 +13,8 @@ TEST_F(GraphTest, CheckGraphConstructors) {
 	ASSERT_EQ(five_symmetric.GetNodes().size(), five_symmetric.Size());
 	ASSERT_EQ(five_symmetric.Size(), 5);
 
-	ASSERT_TRUE(reflexive.HasProperty(Graph::REFLEXIVE));
-	ASSERT_FALSE(reflexive.HasProperty(Graph::SYMMETRIC));
+	ASSERT_TRUE(reflexive.Is(Graph::REFLEXIVE));
+	ASSERT_FALSE(reflexive.Is(Graph::SYMMETRIC));
 	ASSERT_EQ(five_symmetric.GetProperties(), Graph::SYMMETRIC);
 
 	empty.AddNode();

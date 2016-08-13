@@ -8,7 +8,6 @@ typedef char mask_t;
 class Node {
 	const size_t id_;
 	std::unordered_map <size_t, mask_t> ports;
-
 public:
 	typedef enum {
 		MULL,
@@ -24,6 +23,8 @@ public:
 	bool has(const size_t &key) const;
 	mask_t at(const Node &key) const;
 	mask_t at(const size_t &key) const;
+	std::unordered_map <size_t, mask_t> get_ports() const;
+
 	const bool operator== (const Node &other) const;
 	const bool operator!= (const Node &other) const;
 	const bool operator>> (const Node &other) const;

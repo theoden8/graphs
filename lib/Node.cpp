@@ -37,6 +37,10 @@ mask_t Node::at(const size_t &key) const {
 	return MULL;
 }
 
+std::unordered_map <size_t, mask_t> Node::get_ports() const {
+	return ports;
+}
+
 
 const bool Node::operator== (const Node &other) const {
 	return id_ == other.id();
