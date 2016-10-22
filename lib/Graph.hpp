@@ -42,4 +42,5 @@ public:
 	typedef long dist_t;
 	static const dist_t UNDEFINED;
 	std::vector <dist_t> bfs(const size_t from) const;
+	std::vector <bool> dfs(const size_t from) const;
 };
