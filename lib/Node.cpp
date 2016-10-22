@@ -24,20 +24,20 @@ bool Node::has(const size_t &key) const {
 	return ports.count(key);
 }
 
-mask_t Node::at(const Node &key) const {
+Edge Node::at(const Node &key) const {
 	return at(key.id());
 }
 
-mask_t Node::at(const size_t &key) const {
+Edge Node::at(const size_t &key) const {
 	if(has(key)) {
-		const mask_t val = ports.at(key);
-		assert(val != MULL);
+		const Edge val = ports.at(key);
+		assert(val.mask != Edge::MULL);
 		return val;
 	}
-	return MULL;
+	return Edge(Edge::MULL);
 }
 
-std::unordered_map <size_t, mask_t> Node::get_ports() const {
+std::unordered_map <size_t, Edge> Node::get_ports() const {
 	return ports;
 }
 
@@ -52,7 +52,7 @@ const bool Node::operator!= (const Node &other) const {
 
 const bool Node::operator>> (const Node &other) const {
 	if(ports.count(other.id()))
-		return ports.at(other.id()) & OUTBOUND;
+		return ports.at(other.id()).mask & Edge::OUTBOUND;
 	return false;
 }
 

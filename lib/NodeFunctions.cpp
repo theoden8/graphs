@@ -2,8 +2,12 @@
 
 
 void Node::operator>>= (Node &other) {
-	ports[other.id()] |= OUTBOUND;
-	other.ports[id()] |= INBOUND;
+	Edge
+		&outb = ports[other.id()],
+		&inb = other.ports[id()];
+	outb.mask |= Edge::OUTBOUND;
+	outb.dist = Edge::DIST_DEFAULT;
+	inb.mask |= Edge::INBOUND;
 }
 
 void Node::operator<<= (Node &other) {
@@ -21,19 +25,19 @@ bool Node::check_pair(const Node &other) const {
 		(
 					has(other)
 				&&
-					at(other) == MULL
+					at(other).mask == Edge::MULL
 			||
 					other.has(*this)
 				&&
-					other.at(*this) == MULL
+					other.at(*this).mask == Edge::MULL
 		) && (
-					at(other) & INBOUND
+					at(other).mask & Edge::INBOUND
 				&&
-					!(other.at(*this) & OUTBOUND)
+					!(other.at(*this).mask & Edge::OUTBOUND)
 			||
-					at(other) & OUTBOUND
+					at(other).mask & Edge::OUTBOUND
 				&&
-					!(other.at(*this) & INBOUND)
+					!(other.at(*this).mask & Edge::INBOUND)
 		)
 	);
 }
@@ -41,6 +45,7 @@ bool Node::check_pair(const Node &other) const {
 
 void Node::print(FILE *out) const {
 	fprintf(out, "node: %lu\n", id_);
-	for(const auto &it : ports)
-		fprintf(out, "	%lu : %x\n", it.first, it.second);
+	for(const auto &it : ports) {
+		fprintf(out, "	%lu : { %x, %ld }\n", it.first, it.second.mask, it.second.dist);
+	}
 }

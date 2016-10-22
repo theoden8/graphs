@@ -10,7 +10,7 @@
 class Graph {
 protected:
 	typedef std::vector <Node> nodes_t;
-	const mask_t properties_;
+	const Edge::mask_t properties_;
 	nodes_t nodes_;
 public:
 
@@ -21,12 +21,12 @@ public:
 	} PROPERTY;
 
 	Graph();
-	Graph(mask_t properties);
-	Graph(size_t size, mask_t properties);
+	Graph(Edge::mask_t properties);
+	Graph(size_t size, Edge::mask_t properties);
 	~Graph();
 
-	mask_t GetProperties() const;
-	bool Is(mask_t property) const;
+	Edge::mask_t GetProperties() const;
+	bool Is(Edge::mask_t property) const;
 	nodes_t GetNodes() const;
 	size_t Size() const;
 
@@ -39,8 +39,8 @@ public:
 	void Connect(size_t id1, size_t id2);
 
 // GraphAlgorithms
-	typedef long dist_t;
-	static const dist_t UNDEFINED;
-	std::vector <dist_t> bfs(const size_t from) const;
+	static const Edge::dist_t UNDEFINED;
+	std::vector <Edge::dist_t> bfs(const size_t from) const;
 	std::vector <bool> dfs(const size_t from) const;
+	std::vector <Edge::dist_t> dijkstra(const size_t from) const;
 };

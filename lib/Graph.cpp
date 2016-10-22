@@ -6,11 +6,11 @@ Graph::Graph():
 	nodes_(), properties_(NO_PROPERTIES)
 {}
 
-Graph::Graph(mask_t properties):
+Graph::Graph(Edge::mask_t properties):
 	nodes_(), properties_(properties)
 {}
 
-Graph::Graph(size_t size, mask_t properties):
+Graph::Graph(size_t size, Edge::mask_t properties):
 	nodes_(),
 	properties_(properties)
 {
@@ -22,11 +22,11 @@ Graph::~Graph()
 {}
 
 
-mask_t Graph::GetProperties() const {
+Edge::mask_t Graph::GetProperties() const {
 	return properties_;
 }
 
-bool Graph::Is(mask_t property) const {
+bool Graph::Is(Edge::mask_t property) const {
 	return properties_ & INT2MASK(property);
 }
 
@@ -37,7 +37,7 @@ void Graph::Print() const {
 		printf("%lu :\t", src.id());
 
 		for(const auto &dst : nodes_)
-			printf(" %X ", src.at(dst));
+			printf(" %X ", src.at(dst).mask);
 
 		printf("\n");
 	}

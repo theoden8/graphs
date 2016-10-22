@@ -47,5 +47,5 @@ TEST_F(NodeTest, CheckingJoiningNodes) {
 	ASSERT_FALSE(b >> c);
 
 	a -= b;
-	ASSERT_EQ(a >> b, Node::MULL);
+	ASSERT_EQ(a >> b, Edge::MULL);
 }
