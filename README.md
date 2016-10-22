@@ -25,7 +25,7 @@ The purpose is to design a solid graph library and to practice implementing grap
 To compile, go to the project folder and run
 
 	./compile
-	
+
 Asserting this works.
 
 ### Testing
@@ -34,7 +34,7 @@ Asserting this works.
 
 ### Using
 
-To use it, simply use the graph static library in your project. The library is tested with **googletest**s and should work somehow.
+To use it, simply link the compiled graph static library within your project. The library is tested with **googletest**s and should work somehow.
 
 ## Note
 
