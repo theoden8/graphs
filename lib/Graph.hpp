@@ -8,10 +8,12 @@
 #define INT2MASK(INT) (1 << ((INT) - 1))
 
 class Graph {
+protected:
 	typedef std::vector <Node> nodes_t;
 	const mask_t properties_;
 	nodes_t nodes_;
 public:
+
 	typedef enum {
 		NO_PROPERTIES,
 		REFLEXIVE,
@@ -37,6 +39,7 @@ public:
 	void Connect(size_t id1, size_t id2);
 
 // GraphAlgorithms
-	static const int UNDEFINED;
-	std::vector <int> bfs(const size_t from) const;
+	typedef long dist_t;
+	static const dist_t UNDEFINED;
+	std::vector <dist_t> bfs(const size_t from) const;
 };
