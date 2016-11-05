@@ -9,9 +9,6 @@
 
 class Node {
 protected:
-	typedef char mask_t;
-	typedef long dist_t;
-
 	const size_t id_;
 	std::unordered_map <size_t, Edge> ports;
 public:

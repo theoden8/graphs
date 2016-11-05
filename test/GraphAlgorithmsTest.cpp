@@ -8,7 +8,7 @@
 TEST_F(GraphTest, BFSTest) {
 	const size_t N = 100;
 	Graph
-		numbers(N, Graph::REFLEXIVE | Graph::SYMMETRIC);
+		numbers(N, Graph::REFLEXIVE);
 
 	for(size_t i = 2; i < N; ++i) {
 		for(size_t j = i * i; j - i <= N; j *= i) {
@@ -37,7 +37,7 @@ TEST_F(GraphTest, BFSTest) {
 
 TEST_F(GraphTest, DFSTest) {
 	Graph
-		g(1000, Graph::REFLEXIVE);
+		g(1000, Graph::REFLEXIVE | Graph::DIRECTED);
 	for(size_t i = 2; i < g.Size(); ++i) {
 		g.Connect(i, i / 2);
 		if(i * 2 < g.Size())
@@ -58,4 +58,9 @@ TEST_F(GraphTest, DFSTest) {
 	ASSERT_TRUE(g_dfs[6]);
 	ASSERT_FALSE(g_dfs[999]);
 	ASSERT_FALSE(g_dfs[997]);
+}
+
+TEST_F(GraphTest, DijkstraTest) {
+	Graph
+		g(10, Graph::REFLEXIVE | Graph::DIRECTED);
 }

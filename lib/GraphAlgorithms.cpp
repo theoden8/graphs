@@ -2,9 +2,9 @@
 #include <cmath>
 
 #include <functional>
-#include <queue>
-#include <stack>
 #include <vector>
+#include <stack>
+#include <queue>
 
 #include "Graph.hpp"
 
@@ -57,37 +57,25 @@ std::vector <bool> Graph::dfs(const size_t from) const {
 }
 
 
-// raw implementation
+typedef std::pair <Edge::dist_t, size_t> priority_t;
 std::vector <Edge::dist_t> Graph::dijkstra(const size_t from) const {
 	std::vector <Edge::dist_t> distances(Size(), Edge::DIST_MAX);
-	std::priority_queue <size_t, std::vector <size_t>, std::greater <size_t> > pqueue;
-	std::vector <bool>
-		is_active(Size(), true),
-		in_pqueue(Size(), false);
-
+	std::priority_queue <priority_t> pqueue;
 	distances[from] = 0;
+	pqueue.push(std::make_pair(0, from));
 	while(!pqueue.empty()) {
-		const Node &nd = nodes_[pqueue.top()];
+		const Node &nd = nodes_[pqueue.top().second];
 		pqueue.pop();
 
-		if(!is_active[nd.id()])
-			continue;
-
 		for(const auto &it : nd.get_ports()) {
-			const size_t dest = it.first;
-			const Edge::dist_t dist = it.second.dist;
-			assert(dist > 0);
-
-			distances[dest] = std::min(distances[dest], distances[nd.id()] + dist);
-
-			if(is_active[dest] && !in_pqueue[dest]) {
-				in_pqueue[dest] = true;
-				// should use pair <distance, vert>
-				pqueue.push(dest);
+			const size_t outbound = it.first;
+			assert(it.second.dist >= 0);
+			const Edge::dist_t new_dist = it.second.dist + distances[nd.id()];
+			if(distances[outbound] > new_dist) {
+				distances[outbound] = new_dist;
+				pqueue.push(std::make_pair(new_dist, nd.id()));
 			}
 		}
-
-		is_active[nd.id()] = false;
 	}
 
 	return distances;

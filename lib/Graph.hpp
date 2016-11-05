@@ -17,7 +17,7 @@ public:
 	typedef enum {
 		NO_PROPERTIES,
 		REFLEXIVE,
-		SYMMETRIC
+		DIRECTED
 	} PROPERTY;
 
 	Graph();
@@ -36,7 +36,7 @@ public:
 	void Print() const;
 
 	void AddNode();
-	void Connect(size_t id1, size_t id2);
+	void Connect(size_t id1, size_t id2, Edge::dist_t dist = Edge::DIST_DEFAULT);
 
 // GraphAlgorithms
 	static const Edge::dist_t UNDEFINED;

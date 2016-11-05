@@ -27,6 +27,8 @@ Edge::mask_t Graph::GetProperties() const {
 }
 
 bool Graph::Is(Edge::mask_t property) const {
+	if(property == NO_PROPERTIES && properties_ == 0x00)
+		return true;
 	return properties_ & INT2MASK(property);
 }
 
