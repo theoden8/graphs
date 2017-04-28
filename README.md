@@ -12,7 +12,22 @@ Created by Kirill Rodriguez on 04/2016.
 
 ## Ambitions
 
-I am ambitious.
+I am ambitious:
+
+* Learn how to do graphs
+* Efficient implementation of different types of graphs (simple/directed, labelled/colored, etc)
+* Search algorithms (bidir. bfs, dfs, dijkstra, etc)
+* Connectivity
+* Trees, DAGs (topological sort, prufer coding, etc)
+* Unicyclic graphs (enumeration)
+* Isomorphism of different types of graphs
+* Different matrices (adjacency, incidence, Laplace)
+* Minimal spanning tree
+* Graph coloring
+* Planarity and visualization
+* more...
+
+Barely any of it is implemented and tested in the same time.
 
 ## Purpose
 
