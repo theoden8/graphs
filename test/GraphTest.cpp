@@ -5,23 +5,23 @@
 TEST_F(GraphTest, CheckGraphConstructors) {
 	Graph
 		empty,
-		reflexive(Graph::REFLEXIVE),
-		five_directed(5, Graph::DIRECTED);
+		reflexive(Graph::PSEUDOGRAPH),
+		five_directed(5, Graph::DIRECTEDGRAPH);
 	ASSERT_EQ(empty.Size(), 0);
-	ASSERT_EQ(empty.GetProperties(), Graph::NO_PROPERTIES);
-	ASSERT_TRUE(empty.Is(Graph::NO_PROPERTIES));
-	ASSERT_FALSE(empty.Is(Graph::REFLEXIVE));
-	ASSERT_FALSE(empty.Is(Graph::DIRECTED));
+	ASSERT_EQ(empty.GetProperties(), Graph::SIMPLEGRAPH);
+	ASSERT_TRUE(empty.Is(Graph::SIMPLEGRAPH));
+	ASSERT_FALSE(empty.Is(Graph::PSEUDOGRAPH));
+	ASSERT_FALSE(empty.Is(Graph::DIRECTEDGRAPH));
 
 	ASSERT_EQ(reflexive.Size(), 0);
 	ASSERT_EQ(five_directed.Size(), 5);
 	ASSERT_EQ(five_directed.GetNodes().size(), five_directed.Size());
 
-	ASSERT_TRUE(reflexive.Is(Graph::REFLEXIVE));
-	ASSERT_FALSE(reflexive.Is(Graph::DIRECTED));
-	ASSERT_EQ(five_directed.GetProperties(), Graph::DIRECTED);
-	ASSERT_FALSE(five_directed.Is(Graph::REFLEXIVE));
-	ASSERT_TRUE(five_directed.Is(Graph::DIRECTED));
+	ASSERT_TRUE(reflexive.Is(Graph::PSEUDOGRAPH));
+	ASSERT_FALSE(reflexive.Is(Graph::DIRECTEDGRAPH));
+	ASSERT_EQ(five_directed.GetProperties(), Graph::DIRECTEDGRAPH);
+	ASSERT_FALSE(five_directed.Is(Graph::PSEUDOGRAPH));
+	ASSERT_TRUE(five_directed.Is(Graph::DIRECTEDGRAPH));
 
 	empty.AddNode();
 	ASSERT_EQ(empty.Size(), 1);
@@ -29,9 +29,9 @@ TEST_F(GraphTest, CheckGraphConstructors) {
 
 TEST_F(GraphTest, CheckNodesLinkage) {
 	Graph
-		simple(5, Graph::NO_PROPERTIES),
-		reflexive(5, Graph::REFLEXIVE),
-		directed(5, Graph::DIRECTED);
+		simple(5, Graph::SIMPLEGRAPH),
+		reflexive(5, Graph::PSEUDOGRAPH),
+		directed(5, Graph::DIRECTEDGRAPH);
 
 	for(const Node &it : simple.GetNodes())
 		for(const Node &it2 : simple.GetNodes())

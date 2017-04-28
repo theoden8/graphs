@@ -3,9 +3,7 @@
 #include <cstdio>
 #include <unordered_map>
 
-
 #include "Edge.hpp"
-
 
 class Node {
 protected:
@@ -20,6 +18,9 @@ public:
 	bool has(const size_t &key) const;
 	Edge at(const Node &key) const;
 	Edge at(const size_t &key) const;
+	size_t deg() const;
+	size_t deg_in() const;
+	size_t deg_out() const;
 	std::unordered_map <size_t, Edge> get_ports() const;
 
 	const bool operator== (const Node &other) const;

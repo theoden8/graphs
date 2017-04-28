@@ -1,9 +1,10 @@
+#include "Graph.hpp"
+#include "Debug.hpp"
+
 #include <stdexcept>
 
-#include "Graph.hpp"
-
 Graph::Graph():
-	nodes_(), properties_(NO_PROPERTIES)
+	nodes_(), properties_(SIMPLEGRAPH)
 {}
 
 Graph::Graph(Edge::mask_t properties):
@@ -27,7 +28,7 @@ Edge::mask_t Graph::GetProperties() const {
 }
 
 bool Graph::Is(Edge::mask_t property) const {
-	if(property == NO_PROPERTIES && properties_ == 0x00)
+	if(property == SIMPLEGRAPH && properties_ == 0x00)
 		return true;
 	return properties_ & INT2MASK(property);
 }

@@ -7,9 +7,7 @@
 #define NUMIDX(x) (x - 1)
 TEST_F(GraphTest, BFSTest) {
 	const size_t N = 100;
-	Graph
-		numbers(N, Graph::REFLEXIVE);
-
+	Graph numbers(N, Graph::PSEUDOGRAPH);
 	for(size_t i = 2; i < N; ++i) {
 		for(size_t j = i * i; j - i <= N; j *= i) {
 			numbers.Connect(NUMIDX(i), NUMIDX(j - i));
@@ -17,8 +15,8 @@ TEST_F(GraphTest, BFSTest) {
 	}
 
 	std::vector <Edge::dist_t>
-		bfs1 = numbers.bfs(NUMIDX(1)),
-		bfs2 = numbers.bfs(NUMIDX(2));
+		&&bfs1 = numbers.bfs(NUMIDX(1)),
+		&&bfs2 = numbers.bfs(NUMIDX(2));
 	for(size_t i = 0; i < N; ++i) {
 		const Edge::dist_t val = (i == NUMIDX(1)) ? 0 : Edge::DIST_UNDEF;
 		ASSERT_EQ(val, bfs1[i]);
@@ -33,25 +31,37 @@ TEST_F(GraphTest, BFSTest) {
 		ASSERT_EQ(Edge::DIST_UNDEF, bfs2[NUMIDX(i)]);
 	}
 }
+#undef NUMIDX
 
-
-TEST_F(GraphTest, DFSTest) {
-	Graph
-		g(1000, Graph::REFLEXIVE | Graph::DIRECTED);
-	for(size_t i = 2; i < g.Size(); ++i) {
-		g.Connect(i, i / 2);
-		if(i * 2 < g.Size())
-			g.Connect(i, i * 2);
+TEST_F(GraphTest, BFSBidirTest) {
+	const size_t N = 100;
+	Graph numbers(N, Graph::PSEUDOGRAPH);
+	for(size_t i = 0; i < N; ++i) {
+		numbers.Connect(i, i);
+		if(i < N - 2)
+			numbers.Connect(i, i + 2);
 	}
 
-	std::vector <bool> g_dfs;
+	ASSERT_EQ(numbers.bfs_bidirectional(0, 2), 1);
+	ASSERT_EQ(numbers.bfs_bidirectional(0, 1), Edge::DIST_UNDEF);
+	ASSERT_EQ(numbers.bfs_bidirectional(0, 4), 2);
+	ASSERT_EQ(numbers.bfs_bidirectional(0, 98), 49);
+}
 
-	g_dfs = g.dfs(64);
-	for(size_t i = 1; i < g.Size(); i <<= 1) {
+TEST_F(GraphTest, DFSTest) {
+	Graph G(1000, Graph::PSEUDOGRAPH | Graph::DIRECTEDGRAPH);
+	for(size_t i = 2; i < G.Size(); ++i) {
+		G.Connect(i, i / 2);
+		if(i * 2 < G.Size())
+			G.Connect(i, i * 2);
+	}
+
+	std::vector <bool> &&g_dfs = G.dfs(64);
+	for(size_t i = 1; i < G.Size(); i <<= 1) {
 		ASSERT_TRUE(g_dfs[i]);
 	}
 
-	g_dfs = g.dfs(55);
+	g_dfs = G.dfs(55);
 	ASSERT_TRUE(g_dfs[27]);
 	ASSERT_TRUE(g_dfs[880]);
 	ASSERT_TRUE(g_dfs[13]);
@@ -62,5 +72,5 @@ TEST_F(GraphTest, DFSTest) {
 
 TEST_F(GraphTest, DijkstraTest) {
 	Graph
-		g(10, Graph::REFLEXIVE | Graph::DIRECTED);
+		g(10, Graph::PSEUDOGRAPH | Graph::DIRECTEDGRAPH);
 }

@@ -37,6 +37,26 @@ Edge Node::at(const size_t &key) const {
 	return Edge(Edge::MULL);
 }
 
+size_t Node::deg() const {
+	size_t ret = 0;
+	for(const auto &it : get_ports())
+		if(operator>>(it.first))
+			++ret;
+	return ret;
+}
+
+size_t Node::deg_in() const {
+	return deg();
+}
+
+size_t Node::deg_out() const {
+	size_t ret = 0;
+	for(const auto &it : get_ports())
+		if(operator<<(it.first))
+			++ret;
+	return ret;
+}
+
 std::unordered_map <size_t, Edge> Node::get_ports() const {
 	return ports;
 }

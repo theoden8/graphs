@@ -1,6 +1,6 @@
 #!/bin/sh
 
-rm -rvf include/*/
+rm -rvf include/*/ tags
 
 make clean
 for i in Makefile CMakeFiles CMakeCache.txt cmake_install.cmake CTestTestfile.cmake Testing; do
