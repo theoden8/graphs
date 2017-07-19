@@ -2,6 +2,8 @@
 
 #include <Node.hpp>
 
+Edge simple_edge(Edge::NONE, Edge::DIST_DEFAULT);
+
 TEST_F(NodeTest, CheckingConstructorsGettersAndEqOperator) {
 	static const size_t x = 1, y = 2;
 	Node a(x), b(x), c(y);
@@ -14,7 +16,7 @@ TEST_F(NodeTest, CheckingConstructorsGettersAndEqOperator) {
 	ASSERT_EQ(b.id(), x);
 	ASSERT_EQ(c.id(), y);
 
-	a >>= b;
+	a >>= {b, simple_edge};
 	ASSERT_NO_THROW(a.print());
 	ASSERT_NO_THROW(b.print());
 }
@@ -31,11 +33,11 @@ TEST_F(NodeTest, CheckingJoiningNodes) {
 	ASSERT_FALSE(b >> a);
 	ASSERT_FALSE(b >> b);
 
-	a >>= b;
+	a >>= {b, simple_edge};
 	ASSERT_TRUE(a.has(b));
 	ASSERT_TRUE(b.has(a));
 	ASSERT_TRUE(a.check_pair(b));
-	b <<= c;
+	b <<= {c, simple_edge};
 	ASSERT_TRUE(b.check_pair(c));
 
 	ASSERT_EQ(a >> b, b << a);
@@ -47,5 +49,5 @@ TEST_F(NodeTest, CheckingJoiningNodes) {
 	ASSERT_FALSE(b >> c);
 
 	a -= b;
-	ASSERT_EQ(a >> b, Edge::MULL);
+	ASSERT_FALSE(a >> b);
 }

@@ -28,8 +28,8 @@ Edge::mask_t Graph::GetProperties() const {
 }
 
 bool Graph::Is(Edge::mask_t property) const {
-	if(property == SIMPLEGRAPH && properties_ == 0x00)
-		return true;
+	if(property == SIMPLEGRAPH)
+		return properties_ == 0x00;;
 	return properties_ & INT2MASK(property);
 }
 

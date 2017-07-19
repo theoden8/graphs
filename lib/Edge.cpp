@@ -16,3 +16,23 @@ Edge::Edge(mask_t mask, dist_t dist, bandwidth_t bwidth):
 
 Edge::~Edge()
 {}
+
+void Edge::set_inbound() {
+	mask |= INBOUND;
+}
+
+void Edge::set_outbound() {
+	mask |= OUTBOUND;
+}
+
+const bool Edge::is_none() const {
+	return mask == NONE;
+}
+
+const bool Edge::is_in() const {
+	return mask & INBOUND;
+}
+
+const bool Edge::is_out() const {
+	return mask & OUTBOUND;
+}

@@ -70,7 +70,72 @@ TEST_F(GraphTest, DFSTest) {
 	ASSERT_FALSE(g_dfs[997]);
 }
 
+TEST_F(GraphTest, BellmanFordTest) {
+	Graph G(10, Graph::PSEUDOGRAPH | Graph::DIRECTEDGRAPH);
+	G.Connect(0, 3, 10);
+	G.Connect(0, 4, 5);
+	G.Connect(0, 5, 20);
+	G.Connect(3, 9, 5);
+	G.Connect(4, 9, 5);
+	G.Connect(5, 9, 5);
+	auto &&d = G.bellman_ford(0);
+	ASSERT_EQ(d[0], 0);
+	ASSERT_EQ(d[1], Edge::DIST_UNDEF);
+	ASSERT_EQ(d[2], Edge::DIST_UNDEF);
+	ASSERT_EQ(d[3], 10);
+	ASSERT_EQ(d[4], 5);
+	ASSERT_EQ(d[5], 20);
+	ASSERT_EQ(d[6], Edge::DIST_UNDEF);
+	ASSERT_EQ(d[7], Edge::DIST_UNDEF);
+	ASSERT_EQ(d[8], Edge::DIST_UNDEF);
+	ASSERT_EQ(d[9], 10);
+}
+
 TEST_F(GraphTest, DijkstraTest) {
-	Graph
-		g(10, Graph::PSEUDOGRAPH | Graph::DIRECTEDGRAPH);
+	Graph G(10, Graph::PSEUDOGRAPH | Graph::DIRECTEDGRAPH);
+	G.Connect(0, 0, 1);
+	G.Connect(0, 1, 1);
+	G.Connect(1, 2, 2);
+	G.Connect(2, 3, 3);
+	G.Connect(3, 4, 4); // 10
+
+	G.Connect(0, 2, 2); // 2
+
+	G.Connect(3, 5, 2); // 7
+	G.Connect(0, 5, 9); // 9
+
+	G.Connect(5, 7, 2);
+	G.Connect(5, 9, 2); // 9
+	G.Connect(7, 9, 1); // 11
+
+	auto &&d = G.dijkstra(0);
+
+	ASSERT_EQ(d[0], 0);
+	ASSERT_EQ(d[1], 1);
+	ASSERT_EQ(d[2], 2);
+	ASSERT_EQ(d[3], 5);
+	ASSERT_EQ(d[4], 9);
+	ASSERT_EQ(d[5], 7);
+	ASSERT_EQ(d[6], Edge::DIST_UNDEF);
+	ASSERT_EQ(d[7], 9);
+	ASSERT_EQ(d[8], Edge::DIST_UNDEF);
+	ASSERT_EQ(d[9], 9);
+}
+
+TEST_F(GraphTest, DistShortestPathTest) {
+	size_t no_tests = 100;
+	size_t max_size = 100;
+	for(size_t i = 0; i < no_tests; ++i) {
+		size_t size = rand() % max_size + 1;
+		Graph H = Graph::Random(size);
+		size_t start = rand() % size;
+		ASSERT_TRUE(H.dijkstra(start) == H.bellman_ford(start));
+		/* auto &&d = H.dijkstra(start); auto &&f = H.bellman_ford(start); */
+		/* if(d != f) { */
+		/* 	H.Print(); */
+		/* 	for(auto&it:d)std::cout<<it<<" ";std::cout<<std::endl; */
+		/* 	for(auto&it:f)std::cout<<it<<" ";std::cout<<std::endl; */
+		/* 	std::cout << std::endl; */
+		/* } */
+	}
 }

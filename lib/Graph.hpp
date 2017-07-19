@@ -11,7 +11,9 @@
 class Graph {
 protected:
 	using label_t = size_t;
-	using nodes_t = std::vector<Node>;
+	template <typename A> using list_t = std::vector<A>;
+	template <typename A> using mat_t = list_t <list_t <A> >;
+	using nodes_t = list_t<Node>;
 	const Edge::mask_t properties_;
 	nodes_t nodes_;
 public:
@@ -36,19 +38,46 @@ public:
 	Node &operator[] (label_t idx);
 	Node operator[] (label_t idx) const;
 	void AddNode();
-	void Connect(label_t id1, label_t id2, Edge::dist_t dist = Edge::DIST_DEFAULT);
+	void Connect(
+		label_t id1,
+		label_t id2,
+		Edge::dist_t dist = Edge::DIST_DEFAULT,
+		Edge::bandwidth_t bwidth = Edge::BWIDTH_DEFAULT
+	);
+	void RandomlyConnect();
+	static Graph Random(size_t size);
 // GraphSearch
-	std::vector<Edge::dist_t> bfs(const label_t from) const;
+	list_t <Edge::dist_t> bfs(const label_t from) const;
 	Edge::dist_t bfs_bidirectional(const label_t from1, const label_t from2) const;
 	/* Edge::dist_t a_star_search(const label_t from1, const label_t from2) const; */
-	std::vector <bool> dfs(const label_t from) const;
-	std::vector <Edge::dist_t> dijkstra(const label_t from) const;
+	list_t <bool> dfs(const label_t from) const;
+	list_t <Edge::dist_t> dijkstra(const label_t from) const;
+	list_t <Edge::dist_t> bellman_ford(const label_t from) const;
+	list_t <Edge::dist_t> levit(const label_t from) const;
+	mat_t <Edge::dist_t> floyd() const;
+	mat_t <Edge::dist_t> johnsson() const;
+// GraphColoring
 // GraphAttributes
-	bool IsSimpleGraph() const;
-	bool IsDirectedGraph() const;
-	bool IsConnected() const;
-	bool IsAcyclic() const;
-	bool IsDAG() const;
-	bool IsTree() const;
-	bool IsBipartite() const;
+public:
+	typedef bool(graph_checker()const);
+	graph_checker
+		IsSimpleGraph, IsPseudoGraph, IsDirectedGraph,
+		IsWeaklyConnected, IsStronglyConnected, IsConnected,
+		IsAcyclic, IsDAG, IsTree, IsBipartite;
+// GraphMatrices
+	mat_t <bool> adj_matrix() const;
+	static Graph from_adj_matrix(mat_t <bool> &adj);
+	mat_t <bool> incidence_matrix() const;
+	static Graph from_incidence_matrix(mat_t <bool> &inc);
+	mat_t <Edge::dist_t> dist_matrix() const;
+	static Graph from_dist_matrix(mat_t <Edge::dist_t> &dist);
+// GraphDAG
+	typedef Graph DAG;
+	list_t <label_t> topological_sort();
+// GraphTree
+	typedef Graph Tree;
+	size_t diameter() const;
+	list_t <label_t> prufer_encode() const;
+	static Tree prufer_decode(list_t <Edge::dist_t> prufer);
+// GraphSpanningTree
 };

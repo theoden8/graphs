@@ -37,9 +37,6 @@ TEST_F(GraphTest, CheckNodesLinkage) {
 		for(const Node &it2 : simple.GetNodes())
 			ASSERT_FALSE(it >> it2 || it2 << it);
 
-	for(const Node &it : reflexive.GetNodes())
-		ASSERT_TRUE(it >> it && it << it);
-
 	for(Graph *graph : {&simple, &directed})
 		for(size_t i = 0; i < graph->Size(); ++i)
 			graph->Connect(i, (i + 1) % graph->Size());

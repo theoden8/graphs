@@ -28,8 +28,8 @@ public:
 	const bool operator>> (const Node &other) const;
 	const bool operator<< (const Node &other) const;
 
-	void operator>>= (Node &other);
-	void operator<<= (Node &other);
+	void operator>>= (std::pair <Node &, Edge> conn);
+	void operator<<= (std::pair <Node &, Edge> conn);
 	void operator-= (Node &other);
 	bool check_pair(const Node &other) const;
 	void print(FILE *out = stdout) const;

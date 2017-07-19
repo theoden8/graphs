@@ -7,7 +7,7 @@ class Edge {
 public:
 	typedef char mask_t;
 	typedef enum {
-		MULL,
+		NONE,
 		INBOUND,
 		OUTBOUND
 	} PORT_TYPE;
@@ -22,11 +22,16 @@ public:
 		BWIDTH_UNDEF,
 		BWIDTH_MAX,
 		BWIDTH_DEFAULT;
-
+public:
 	mask_t mask;
 	dist_t dist;
 	bandwidth_t bwidth;
-
-	Edge(mask_t mask = MULL, dist_t dist = 1, bandwidth_t bwidth = LONG_MAX);
+public:
+	Edge(mask_t mask = NONE, dist_t dist = 1, bandwidth_t bwidth = LONG_MAX);
 	virtual ~Edge();
+	void set_inbound();
+	void set_outbound();
+	const bool is_none() const;
+	const bool is_in() const;
+	const bool is_out() const;
 };

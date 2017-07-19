@@ -1,17 +1,20 @@
 #include "Node.hpp"
+#include "Debug.hpp"
 
-
-void Node::operator>>= (Node &other) {
-	Edge
-		&outb = ports[other.id()],
-		&inb = other.ports[id()];
-	outb.mask |= Edge::OUTBOUND;
-	outb.dist = Edge::DIST_DEFAULT;
-	inb.mask |= Edge::INBOUND;
+void Node::operator>>= (std::pair <Node &, Edge> conn) {
+	auto &[node, edge] = conn;
+	if(!has(node))
+		ports[node.id()] = edge;
+	ports[node.id()].set_outbound();
+	if(!node.has(*this))
+		node.ports[id()] = edge;
+	node.ports[id()].set_inbound();
+	/* printf("CONNECTING %lu to %lu\n", id(), node.id()), print(), node.print(); */
 }
 
-void Node::operator<<= (Node &other) {
-	other >>= *this;
+void Node::operator<<= (std::pair <Node &, Edge> conn) {
+	auto &[node, edge] = conn;
+	node >>= {*this, edge};
 }
 
 void Node::operator-= (Node &other) {
@@ -23,21 +26,13 @@ void Node::operator-= (Node &other) {
 bool Node::check_pair(const Node &other) const {
 	return !(
 		(
-					has(other)
-				&&
-					at(other).mask == Edge::MULL
-			||
-					other.has(*this)
-				&&
-					other.at(*this).mask == Edge::MULL
-		) && (
-					at(other).mask & Edge::INBOUND
-				&&
-					!(other.at(*this).mask & Edge::OUTBOUND)
-			||
-					at(other).mask & Edge::OUTBOUND
-				&&
-					!(other.at(*this).mask & Edge::INBOUND)
+			has(other) && at(other).is_none()
+			|| other.has(*this) && other.at(*this).is_none()
+		)
+		&&
+		(
+			at(other).is_in() && !other.at(*this).is_out()
+			|| at(other).is_out() && !other.at(*this).is_in()
 		)
 	);
 }

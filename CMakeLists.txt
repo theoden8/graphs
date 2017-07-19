@@ -8,6 +8,8 @@ set(DIRINCLUDE ${DIRROOT}/include)
 MESSAGE( STATUS "DIRROOT:     " ${DIRROOT})
 MESSAGE( STATUS "DIRINCLUDE:  " ${DIRINCLUDE})
 
+add_compile_options(-std=c++1z)
+
 # ------------- EXTERNAL LIBRARIES --------------
 
 # We need thread support
@@ -53,6 +55,7 @@ set(GMOCK_LIB "${source_dir}/googlemock/include")
 # ----------------- GRAPH_LIB -------------------
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${DIRROOT}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${DIRINCLUDE})
 
 set(GRAPH_LIB ${DIRROOT}/lib)
 set(GRAPH_TEST ${DIRROOT}/test)

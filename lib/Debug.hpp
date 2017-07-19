@@ -11,6 +11,6 @@
 
 #define ASSERT_DOMAIN(CONDITION) { \
 	if(!(CONDITION)) { \
-		throw std::domain_error("\033[1;91mdomain_error\033[0m" CODE_LOCATION CONDITION_TOSTR(CONDITION));\
+		throw std::domain_error("\033[1;91mdomain_error\033[0m at " CODE_LOCATION CONDITION_TOSTR(CONDITION));\
 	} \
 }

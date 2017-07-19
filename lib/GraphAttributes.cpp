@@ -1,33 +1,82 @@
 #include "Graph.hpp"
 #include "Debug.hpp"
 
+#include <queue>
 #include <numeric>
 
 bool Graph::IsSimpleGraph() const {
 	if(Is(SIMPLEGRAPH))
 		return true;
-	return false;
+	for(auto &nd : GetNodes())
+		for(auto &[out_id, e] : nd.get_ports())
+			if(e.is_in() != e.is_out())
+				return false;
+	return true;
 }
 
 bool Graph::IsDirectedGraph() const {
 	return Is(DIRECTEDGRAPH);
 }
 
-bool Graph::IsConnected() const {
+bool Graph::IsPseudoGraph() const {
+	return Is(PSEUDOGRAPH);
+}
+
+bool Graph::IsWeaklyConnected() const {
 	if(Size() == 0)
 		return true;
-	std::vector <bool> discovered(Size(), false);
-	discovered[0] = true;
-	for(label_t i = 0; i < Size(); ++i) {
-		const Node &nd = nodes_[i];
-		if(!discovered[i])
-			return false;
-		for(const auto &it : nd.get_ports()) {
-			if(it.first > i)
-				discovered[it.first] = true;
+	list_t <bool> discovered(Size(), false);
+	label_t start = Size() - 1;
+	size_t no_found = 0;
+	discovered[(++no_found, start)] = true;
+	std::queue <label_t> spiral;
+	spiral.push(start);
+	while(!spiral.empty()) {
+		const Node &nd = GetNodes()[spiral.front()];
+		const size_t u = nd.id();
+		spiral.pop();
+		for(const auto &[v, e] : nd.get_ports()) {
+			if(!discovered[v]) {
+				discovered[(++no_found, v)] = true;
+				spiral.push(v);
+			}
 		}
 	}
-	return true;
+	return no_found == Size();
+}
+
+bool Graph::IsStronglyConnected() const {
+	if(!Is(DIRECTEDGRAPH))
+		return IsWeaklyConnected();
+	if(Size() == 0)
+		return true;
+	size_t start = 0;
+	auto &&discovered = dfs(start); size_t no_found = 0;
+	std::queue <label_t> spiral;
+	for(size_t i = 0; i < Size(); ++i)
+		if(discovered[(++no_found, i)])
+			spiral.push(i);
+	puts("IS STRONGLY CONNECTED: BEGIN");
+	for(auto it:discovered)printf("%d ", it?1:0); puts("");
+	while(!spiral.empty()) {
+		const Node &nd = GetNodes()[spiral.front()];
+		const size_t u = nd.id();
+		printf("Popping %ld\n", u);
+		spiral.pop();
+		for(const auto &[v, e] : nd.get_ports()) {
+			if(e.is_in() && !discovered[v]) {
+				discovered[(++no_found, v)] = true;
+				spiral.push(v);
+				printf("Pushing %ld\n", v);
+			}
+		}
+	}
+	puts("IS STRONGLY CONNECTED: END");
+	return no_found == Size();
+}
+
+bool Graph::IsConnected() const {
+	return IsWeaklyConnected();
 }
 
 bool Graph::IsAcyclic() const {

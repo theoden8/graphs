@@ -17,11 +17,11 @@ size_t Node::id() const {
 }
 
 bool Node::has(const Node &key) const {
-	return ports.count(key.id());
+	return has(key.id());
 }
 
 bool Node::has(const size_t &key) const {
-	return ports.count(key);
+	return ports.find(key) != ports.end();
 }
 
 Edge Node::at(const Node &key) const {
@@ -31,30 +31,30 @@ Edge Node::at(const Node &key) const {
 Edge Node::at(const size_t &key) const {
 	if(has(key)) {
 		const Edge val = ports.at(key);
-		assert(val.mask != Edge::MULL);
+		assert(!val.is_none());
 		return val;
 	}
-	return Edge(Edge::MULL);
+	return Edge(Edge::NONE);
 }
 
 size_t Node::deg() const {
 	size_t ret = 0;
-	for(const auto &it : get_ports())
-		if(operator>>(it.first))
+	for(const auto &[edge_id, edge] : get_ports())
+		if(edge.is_out())
 			++ret;
 	return ret;
 }
 
 size_t Node::deg_in() const {
-	return deg();
+	size_t ret = 0;
+	for(const auto &[edge_id, edge] : get_ports())
+		if(edge.is_in())
+			++ret;
+	return ret;
 }
 
 size_t Node::deg_out() const {
-	size_t ret = 0;
-	for(const auto &it : get_ports())
-		if(operator<<(it.first))
-			++ret;
-	return ret;
+	return deg();
 }
 
 std::unordered_map <size_t, Edge> Node::get_ports() const {
@@ -67,16 +67,13 @@ const bool Node::operator== (const Node &other) const {
 }
 
 const bool Node::operator!= (const Node &other) const {
-	return !(operator==(other));
+	return !(*this == other);
 }
 
 const bool Node::operator>> (const Node &other) const {
-	if(ports.count(other.id()))
-		return ports.at(other.id()).mask & Edge::OUTBOUND;
-	return false;
+	return at(other).is_out();
 }
 
 const bool Node::operator<< (const Node &other) const {
 	return other >> *this;
 }
-
