@@ -1,3 +1,5 @@
+![travis status](https://travis-ci.org/theoden8/graphs.svg?branch=master)
+
 # Graphs
 
 ![pic](./_Icon.jpg)

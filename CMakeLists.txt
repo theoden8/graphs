@@ -54,7 +54,7 @@ set(GMOCK_LIB "${source_dir}/googlemock/include")
 
 # ----------------- GRAPH_LIB -------------------
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${DIRROOT}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ./bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${DIRINCLUDE})
 
 set(GRAPH_LIB ${DIRROOT}/lib)
