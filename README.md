@@ -52,7 +52,3 @@ Asserting this works.
 ### Using
 
 To use it, simply link the compiled graph static library within your project. The library is tested with **googletest**s and should work somehow.
-
-## Note
-
-This library is a part of [xNERD Space Program](https://github.com/theoden8/xNERD/projects/1).
