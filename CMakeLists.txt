@@ -3,10 +3,12 @@ cmake_minimum_required(VERSION 2.8.2)
 project(graph)
 
 set(DIRROOT ${CMAKE_CURRENT_SOURCE_DIR})
-set(DIRINCLUDE ${DIRROOT}/include)
+set(DIRINCLUDE .)
 
 MESSAGE( STATUS "DIRROOT:     " ${DIRROOT})
 MESSAGE( STATUS "DIRINCLUDE:  " ${DIRINCLUDE})
+
+add_compile_options(-std=c++17)
 
 # ------------- EXTERNAL LIBRARIES --------------
 
@@ -43,8 +45,8 @@ add_dependencies(libgmock gmock)
 
 # Set gmock properties
 set_target_properties(libgmock PROPERTIES
-	"IMPORTED_LOCATION" "${binary_dir}/googlemock/libgmock.a"
-	"IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
+	IMPORTED_LOCATION "${binary_dir}/googlemock/libgmock.a"
+	IMPORTED_LINK_INTERFACE_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}"
 #	"INTERFACE_INCLUDE_DIRECTORIES" "${source_dir}/include"
 )
 # I couldn't make it work with INTERFACE_INCLUDE_DIRECTORIES
@@ -52,10 +54,10 @@ set(GMOCK_LIB "${source_dir}/googlemock/include")
 
 # ----------------- GRAPH_LIB -------------------
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${DIRROOT}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ./bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${DIRINCLUDE})
 
-set(GRAPH_LIB ${DIRROOT}/lib)
+set(GRAPH_LIB ${DIRROOT}/src)
 set(GRAPH_TEST ${DIRROOT}/test)
 
 add_subdirectory(${GRAPH_LIB})
@@ -65,4 +67,4 @@ add_subdirectory(${GRAPH_TEST})
 
 enable_testing()
 
-add_test(Graphs ./bin/_tgraph)
+add_test(Graphs ./bin/test_graph)

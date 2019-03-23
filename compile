@@ -1,6 +1,0 @@
-#!/bin/sh
-
-./clean
-cmake .
-make
-make test

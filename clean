@@ -1,8 +1,0 @@
-#!/bin/sh
-
-rm -rvf include/*/ tags
-
-make clean
-for i in Makefile CMakeFiles CMakeCache.txt cmake_install.cmake CTestTestfile.cmake Testing; do
-  find . -name "$i" -exec rm  -rfv {} \;
-done
